@@ -1,0 +1,64 @@
+<section class="section">
+  <div class="container has-text-centered">
+    <h1 class="title">{{ getTitle() }}</h1>
+  </div>
+</section>
+<section class="hero is-medium">
+  <div class="hero-body">
+    <div class="columns is-centered">
+      <div class="column is-half">
+        <div class="container is-fluid">
+          <p class="is-size-5 py-3 has-text-weight-medium has-text-left-mobile">
+            {{ getInputInfo() }}
+          </p>
+          <form [formGroup]="user" (ngSubmit)="onSubmit()">
+            <div class="field">
+              <div class="control">
+                <input
+                  formControlName="username"
+                  autofocus
+                  class="input is-primary is-medium"
+                  [ngClass]="{'is-success': username.touched && username.valid, 'is-danger': username.touched && !username.valid}"
+                  type="text"
+                  placeholder="Login*"
+                />
+              </div>
+              <app-form-error-message 
+              [controlObj]="username" 
+              [controlErrorMessages]="errorHandlerUsernameControl()"></app-form-error-message>
+            </div>
+            <div class="field">
+              <p class="control">
+                <input
+                  formControlName="password"
+                  [ngClass]="{'is-success': password.touched && password.valid, 'is-danger': password.touched && !password.valid}"
+                  class="input is-primary is-medium"
+                  type="password"
+                  placeholder="Password*"
+                />
+              </p>
+            </div>
+            <app-form-error-message 
+              [controlObj]="password" 
+              [controlErrorMessages]="errorHandlerPasswordControl()"></app-form-error-message>
+            <div class="field ">
+              <button type="submit" [disabled]="(user.invalid || !(username.dirty || username.dirty))" class="button is-primary is-fullwidth">
+                Submit
+              </button>
+            </div>
+            <div class="field" *ngIf="!isSignUp">
+              <button
+                type="button"
+                class="button is-fullwidth"
+                (click)="onSignUp()"
+              >
+                Dont have an account? Sign Up now.
+              </button>
+            </div>
+          </form>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

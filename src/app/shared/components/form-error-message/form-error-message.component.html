@@ -1,0 +1,7 @@
+<ng-container *ngIf="controlObj.invalid && (controlObj.dirty || controlObj.touched)">
+<p
+  class="help is-danger is-size-6 has-text-weight-semibold"
+  *ngFor="let error of getErrorMessage()">
+  {{ error }}</p>
+
+</ng-container>

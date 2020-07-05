@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "task-management"
+    }
+  },
+  "defaultProject": "task-management",
+  "cli": {
+    "analytics": false
+  }
 }
