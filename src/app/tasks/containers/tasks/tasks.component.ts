@@ -1,21 +1,19 @@
-import { Component, OnInit, ComponentFactoryResolver, ComponentFactory, ViewChild, ViewContainerRef } from '@angular/core';
-import { TasksService } from '../../services/tasks.service';
-import { Task } from '../../types/task.interface';
-import { LocalStorageService } from '../../../shared/services/localStorage.service';
-import { Observable } from 'rxjs';
-import { TaskStatus } from '../../types/task-status.enum';
-import { MessagesService } from '../../../shared/components/messages/messages.service';
-import { MessagesTypes } from 'src/app/shared/components/messages/messages.types.enum';
-import { TaskEditComponent } from '../../components/task-edit/task-edit.component';
-import { TaskListComponent } from '../../components/task-list/task-list.component';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { filter, switchMap } from 'rxjs/operators';
+import { MessagesTypes } from 'src/app/shared/components/messages/messages.types.enum';
+import { MessagesService } from '../../../shared/components/messages/messages.service';
+import { LocalStorageService } from '../../../shared/services/localStorage.service';
 import { TaskCreateComponent } from '../../components/task-create/task-create.component';
-import { switchMap, filter } from 'rxjs/operators';
+import { TasksService } from '../../services/tasks.service';
+import { TaskStatus } from '../../types/task-status.enum';
+import { Task } from '../../types/task.interface';
 
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.scss']
+  styleUrls: ['./tasks.component.scss'],
 })
 export class TasksComponent implements OnInit {
   tasks: Task[];
@@ -70,7 +68,8 @@ export class TasksComponent implements OnInit {
   }
 
   onChangeStatus(task: Task) {
-    this.updateTaskStatus(task.id, task.status).subscribe(() => { 
+    this.updateTaskStatus(task.id, task.status).subscribe((resTask: Task) => {
+      this.tasks = this.tasks.map(tsk => tsk.id === task.id ? resTask : tsk)
       this.messageService.showMessage(MessagesTypes.SUCCESS, 'Status task has been successfully updated')
     }, (error) => {
       this.messageService.showMessage(MessagesTypes.WARNING, 'Could not update status task')

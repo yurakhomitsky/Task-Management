@@ -21,6 +21,7 @@ const routes: Routes = [
     SharedModule,
     RouterModule.forChild(routes)
   ],
-  providers: []
+  providers: [],
+  entryComponents: [TaskCreateComponent]
 })
 export class TasksModule { }

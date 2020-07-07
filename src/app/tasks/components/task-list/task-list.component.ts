@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { TaskStatus } from '../../types/task-status.enum';
 import { Task } from '../../types/task.interface';
 import { TaskEditComponent } from '../task-edit/task-edit.component';
@@ -6,7 +6,8 @@ import { TaskEditComponent } from '../task-edit/task-edit.component';
 @Component({
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
-  styleUrls: ['./task-list.component.scss']
+  styleUrls: ['./task-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskListComponent implements OnInit, AfterViewInit {
 
