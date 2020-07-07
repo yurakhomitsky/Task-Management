@@ -1,1 +1,29 @@
-<p>tasks works!</p>
+
+
+<div class="hero is-fullheight">
+  <div class="hero-body">
+    <div class="container ">
+        <div class="columns">
+            <div class="column is-full">
+              <div class="columns is-centered is-vcentered">
+                  <div class="column is-full has-text-centered">
+                      <p class="is-size-5 py-3 has-text-weight-medium ">Get things done</p>
+                      <button class="button is-primary is-rounded" (click)="createTask()">New task</button>
+                  </div>
+              </div>
+            </div>
+          </div>
+        <div class="columns is-centered is-vcentered is-mobile">
+          <div #entry class="column is-two-thirds">
+              <app-task-list 
+              (changeStatus)="onChangeStatus($event)" 
+              (editedTask)="onEditTask($event)"
+              (removedTask)="onRemovedTask($event)"
+               *ngFor="let task of tasks" [task]="task">
+                <app-task-edit></app-task-edit>
+              </app-task-list>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

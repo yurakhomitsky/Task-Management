@@ -23,9 +23,9 @@
                   placeholder="Login*"
                 />
               </div>
-              <app-form-error-message 
-              [controlObj]="username" 
-              [controlErrorMessages]="errorHandlerUsernameControl()"></app-form-error-message>
+              <app-form-error-message *ngIf="(username.invalid) && (username.dirty || username.touched)"
+              [errors]="errorHandlerUsernameControl()"
+              ></app-form-error-message>
             </div>
             <div class="field">
               <p class="control">
@@ -38,9 +38,8 @@
                 />
               </p>
             </div>
-            <app-form-error-message 
-              [controlObj]="password" 
-              [controlErrorMessages]="errorHandlerPasswordControl()"></app-form-error-message>
+            <app-form-error-message *ngIf="(password.invalid) && (password.dirty || password.touched)"
+            [errors]="errorHandlerPasswordControl()"></app-form-error-message>
             <div class="field ">
               <button type="submit" [disabled]="(user.invalid || !(username.dirty || username.dirty))" class="button is-primary is-fullwidth">
                 Submit

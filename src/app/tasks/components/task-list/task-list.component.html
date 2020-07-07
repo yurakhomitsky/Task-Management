@@ -1,0 +1,61 @@
+<div class="card my-5">
+
+
+  <ng-template
+    [ngTemplateOutlet]="getTemplate() || taskDisplay"
+    [ngTemplateOutletContext]="{ $implicit: task }"></ng-template>
+
+    <ng-template #taskDisplay  let-task>
+      <header class="card-header is-centered is-vcentered">
+        <p class="card-header-title">
+          {{ task?.title }}
+        </p>
+        <div class="select is-vcentered">
+          <select [ngModel]="currentStatus" (ngModelChange)="onChange($event)">
+            <option
+              *ngFor="let status of taskStatus"
+              [value]="status"
+              [selected]="status === task?.status"
+              >{{ status }}</option
+            >
+          </select>
+        </div>
+      </header>
+      <div class="card-content">
+        <div class="content">
+          {{ task?.description }}
+        </div>
+      </div>
+    </ng-template>
+
+  <footer class="card-footer">
+    <div class="container py-2">
+      <div class="field is-grouped is-grouped-centered">
+        <p class="control">
+          <button
+            class="button"
+            [ngClass]="{
+              'is-warning': !isEditing,
+              'is-success': isEditing
+            }"
+            (click)="onEdit()"
+          >
+            {{ isEditing ? "Save" : "Edit" }}
+          </button>
+        </p>
+        <p class="control" *ngIf="isEditing">
+          <button class="button" (click)="isEditing = !isEditing">
+            Cancel
+          </button>
+        </p>
+        <p class="control" *ngIf="!isEditing">
+          <button class="button is-danger" (click)="onDelete()">
+            Delete post
+          </button>
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+

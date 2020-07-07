@@ -3,22 +3,22 @@
     <nav class="navbar">
       <div class="container">
         <div class="navbar-brand">
-          <span class="navbar-burger burger" data-target="navbarMenuHeroB">
+          <span class="navbar-burger burger"  [ngClass]="{'is-active': isActive}" data-target="navbarMenuHeroB" (click)="isActive = !isActive">
             <span></span>
             <span></span>
             <span></span>
           </span>
         </div>
-        <div id="navbarMenuHeroB " class="navbar-menu">
+        <div id="navbarMenuHeroB " class="navbar-menu" [ngClass]="{'is-active': isActive}">
           <div class="navbar-end">
-            <a class="navbar-item is-active" routerLink="/home">
+            <a class="navbar-item " [routerLink]="['/home']" routerLinkActive="is-active">
               Home
             </a>
-            <a class="navbar-item">
+            <a class="navbar-item" [routerLink]="['/tasks']" routerLinkActive="is-active">
               Tasks
             </a>
             <span class="navbar-item">
-              <a class="button is-info is-inverted" routerLink="/login">
+              <a class="button is-info is-inverted" [routerLink]="['/login']">
                 <span>Login</span>
               </a>
             </span>

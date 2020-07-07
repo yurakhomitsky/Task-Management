@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { ControlErrorMessages } from '../../types/controlErrorMessages.interface';
+
 
 @Component({
   selector: 'app-form-error-message',
@@ -12,18 +11,16 @@ import { ControlErrorMessages } from '../../types/controlErrorMessages.interface
 
 
 export class FormErrorMessageComponent implements OnInit, OnChanges {
-  @Input() controlObj: FormControl;
-  @Input() controlErrorMessages: ControlErrorMessages;
+
+  @Input() errors: string[];
   constructor() { }
 
-  ngOnChanges(changes: SimpleChanges): void {}
-
-  ngOnInit(): void {}
-
-  getErrorMessage(){
-   return Object.keys(this.controlErrorMessages).map(keyError => {
-      return this.controlObj.hasError(keyError) ? this.controlErrorMessages[keyError](this.controlObj.errors[keyError]) : this.controlErrorMessages['default']();
-    }) 
+  ngOnChanges(changes: SimpleChanges): void {
 
   }
+
+  ngOnInit(): void {
+    
+  }
+
 }

@@ -9,7 +9,8 @@ import { SharedModule } from './shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeModule } from './home/home.module';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './shared/materialModule/material.module';
 
 @NgModule({
   declarations: [
@@ -17,8 +18,10 @@ import { HomeModule } from './home/home.module';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HomeModule,
     SharedModule,
+    MaterialModule,
     HttpClientModule,
     AppRoutingModule,
 

@@ -3,28 +3,32 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AppRoutingModule } from '../app-routing.module';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FormErrorMessageComponent } from './components/form-error-message/form-error-message.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { MessagesComponent } from './components/messages/messages.component';
+import { MaterialModule } from './materialModule/material.module';
+
 
 @NgModule({
-  declarations: [HeaderComponent,FooterComponent, FormErrorMessageComponent, LoaderComponent],
+  declarations: [HeaderComponent,FooterComponent, FormErrorMessageComponent, LoaderComponent, MessagesComponent],
   imports: [
     CommonModule,
-    RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
+
   ],
   exports: [
     CommonModule,
     HeaderComponent,
     FooterComponent,
-    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     FormErrorMessageComponent,
-    LoaderComponent
+    LoaderComponent,
+    MessagesComponent
   ]
 })
 export class SharedModule { }

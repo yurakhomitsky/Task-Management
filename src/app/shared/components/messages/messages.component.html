@@ -1,0 +1,15 @@
+<ng-container *ngIf="messages$ | async as messages">
+  <article class="message snackbar-wrap"
+  [ngClass]="messages.type"
+  *ngIf="showMessages">
+    <div class="message-header">
+      <p>Danger</p>
+      <button class="delete" aria-label="delete" (click)="showMessages = !showMessages"></button>
+    </div>
+    <div class="message-body" >
+      <p  *ngFor="let message of messages.messages"> - {{message}}</p>
+    </div>
+  </article>
+</ng-container>
+
+

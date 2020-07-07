@@ -1,12 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ControlErrorMessages } from '../../shared/types/controlErrorMessages.interface';
+import { getErrorsFromControl } from '../../shared/utils/formControlErrors';
+import { MessagesService } from '../../shared/components/messages/messages.service';
+import { MessagesTypes } from 'src/app/shared/components/messages/messages.types.enum';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
 
@@ -16,7 +21,7 @@ export class LoginComponent implements OnInit {
 
   public isSignUp = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private messageService: MessagesService, private router: Router) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -49,23 +54,28 @@ export class LoginComponent implements OnInit {
       this.authService.signin(this.user.value)
         .subscribe((data) => {
           this.resetForm(this.user);
+          this.router.navigate(['/tasks']);
+        }, 
+        (error: HttpErrorResponse) => {
+          const {message} = error.error;
+          if (error.status === 401 && message.includes('Invalid credentials'))
+              this.messageService.showMessage(MessagesTypes.WARNING, 'Incorrect login or password')
         })
     } else {
-      console.log('Registr');
       this.authService.signUp(this.user.value)
         .subscribe((data) => {
           console.log(data);
         })
       this.isSignUp = !this.isSignUp;
     }
-    
+
     // this.isSignUp = !this.isSignUp ? this.isSignUp : !this.isSignUp;
     // this.resetForm(this.user);
   }
 
   onSignUp(): void {
     this.isSignUp = !this.isSignUp;
- 
+
     this.resetForm(this.user);
 
   }
@@ -81,11 +91,11 @@ export class LoginComponent implements OnInit {
   }
 
 
-  errorHandlerUsernameControl(): ControlErrorMessages {
+  errorHandlerUsernameControl(): string[] {
     const onRequire = () => 'This field is required.'
 
     const onMaxLength = ({ requiredLength, actualLength }) => `Max length should be ${requiredLength} actual length is ${actualLength}.`
-    
+
     const onMinLength = ({ requiredLength, actualLength }) => `Min length should be ${requiredLength} actual length is ${actualLength}.`
 
     const errors = {
@@ -94,23 +104,25 @@ export class LoginComponent implements OnInit {
       maxlength: onMaxLength,
       default: () => ''
     }
-    return errors;
+    return getErrorsFromControl(this.username,errors);
+
   }
 
-  errorHandlerPasswordControl(): ControlErrorMessages {
+  errorHandlerPasswordControl(): string[] {
     const onRequire = () => 'This field is required.'
 
     const onPattern = () => 'Password should have at least one (UpperCase and LowerCase) letter and at least one number.'
-
+    const onMaxLength = ({ requiredLength, actualLength }) => `Max length should be ${requiredLength} actual length is ${actualLength}.`
     const onMinLength = ({ requiredLength, actualLength }) => `Length should be ${requiredLength} actual length is ${actualLength}.`
 
     const errors = {
       required: onRequire,
       pattern: onPattern,
       minlength: onMinLength,
+      maxlength: onMaxLength,
       default: () => ''
     }
-    return errors;
+    return getErrorsFromControl(this.password,errors);
   }
 
   private resetForm(form: FormGroup): void {
@@ -120,5 +132,5 @@ export class LoginComponent implements OnInit {
     // })
     form.reset();
   }
- 
+
 }

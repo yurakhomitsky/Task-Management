@@ -1,0 +1,51 @@
+<ng-template #editTemplate>
+  <form [formGroup]="taskForm">
+    <header class="card-header">
+      <div class="card-header-title">
+        <div class="columns is-vcentered">
+          <div class="column is-four-fifths">
+            <div class="field">
+              <div class="control is-expanded">
+                <input
+                  formControlName="title"
+                  class="input is-info is-medium"
+                  type="text"
+                  placeholder="Title"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="column is-half is-vertical-center">
+            <div class="field">
+              <div class="control">
+                <div class="select is-info is-medium">
+                  <select  formControlName="status">
+                    <option
+                      [value]="status"
+                      *ngFor="let status of taskStatus"
+                      >{{ status }}</option
+                    >
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="card-content">
+      <div class="content">
+        <div class="field">
+          <div class="control">
+            <textarea
+              formControlName="description"
+              class="textarea is-medium is-info"
+              placeholder="Description"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</ng-template>

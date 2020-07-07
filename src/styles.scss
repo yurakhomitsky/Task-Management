@@ -12,7 +12,6 @@ $progress-borderRadius: 0;
 // Update Bulma's global variables
 $family-sans-serif: "Nunito", sans-serif;
 $grey-dark: $brown;
-$grey-light: $beige-light;
 $primary: $purple;
 $link: $pink;
 $widescreen-enabled: false;
@@ -22,10 +21,9 @@ $progress-border-radius: $progress-borderRadius;
 
 // Update some of Bulma's component variables
 $body-background-color: $beige-lighter;
-// $control-border-width: 2px;
-// $input-border-color: transparent;
 $input-shadow: none;
 
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 // Import only what you need from Bulma
 @import "../node_modules/bulma/bulma.sass";
 // @import "../node_modules/bulma/sass/utilities/_all.sass";

@@ -1,0 +1,56 @@
+
+    <form [formGroup]="taskForm">
+        <header class="card-header">
+          <div class="card-header-title">
+            <div class="columns is-vcentered">
+              <div class="column is-full">
+                <div class="field">
+                  <div class="control is-expanded">
+                    <input
+                      formControlName="title"
+                      class="input is-info is-medium"
+                      type="text"
+                      placeholder="Title"
+                    />
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </header>
+    
+        <div class="card-content">
+          <div class="content">
+            <div class="field">
+              <div class="control">
+                <textarea
+                  formControlName="description"
+                  class="textarea is-medium is-info"
+                  placeholder="Description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+  <footer class="card-footer">
+    <div class="container py-2">
+      <div class="field is-grouped is-grouped-centered">
+        <p class="control">
+          <button
+            class="button is-success"
+            (click)="onCreate()">
+            Save
+          </button>
+        </p>
+        <p class="control" >
+          <button class="button" (click)="onCancel()">
+            Cancel
+          </button>
+        </p>
+      </div>
+    </div>
+  </footer>
+

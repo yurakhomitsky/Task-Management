@@ -20,7 +20,7 @@ export class AuthService {
 
     signin(body: AuthCredentials): Observable<SigninResponse> {
         return this.httpClient.post<SigninResponse>(`${this.endPoint}signin`, body).pipe(
-            tap((token) => this.localStorageService.setItem('jwtToken', token))
+            tap((token) => this.localStorageService.saveToken(token.accessToken))
         );
     }
 }
