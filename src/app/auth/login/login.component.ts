@@ -57,9 +57,12 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/tasks']);
         }, 
         (error: HttpErrorResponse) => {
+          console.log(error);
           const {message} = error.error;
-          if (error.status === 401 && message.includes('Invalid credentials'))
-              this.messageService.showMessage(MessagesTypes.WARNING, 'Incorrect login or password')
+          if (error.status === 401 && message.includes('Invalid credentials')) {
+            this.messageService.showMessage(MessagesTypes.WARNING, 'Incorrect login or password')
+          }
+          this.messageService.showMessage(MessagesTypes.ALERT, 'Opps something went wrong')
         })
     } else {
       this.authService.signUp(this.user.value)

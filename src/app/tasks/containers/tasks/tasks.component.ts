@@ -31,7 +31,7 @@ export class TasksComponent implements OnInit {
       this.tasks = tasks;
     },
       (error) => {
-        // this.messageService.showMessage(MessagesTypes.WARNING, 'Could not retrieve all tasks')
+        this.messageService.showMessage(MessagesTypes.WARNING, 'Could not retrieve all tasks')
       })
   }
 
