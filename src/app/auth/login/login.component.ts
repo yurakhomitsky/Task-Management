@@ -7,6 +7,7 @@ import { MessagesService } from '../../shared/components/messages/messages.servi
 import { MessagesTypes } from 'src/app/shared/components/messages/messages.types.enum';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthStore } from '../services/auth.store.service';
 
 @Component({
   selector: 'app-login',
@@ -14,14 +15,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-
   user: FormGroup;
   username: FormControl;
   password: FormControl;
 
   public isSignUp = false;
 
-  constructor(private authService: AuthService, private messageService: MessagesService, private router: Router) { }
+  constructor(
+    private authStore: AuthStore,
+    private messageService: MessagesService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -31,44 +35,32 @@ export class LoginComponent implements OnInit {
     this.initFormControls();
     this.user = new FormGroup({
       username: this.username,
-      password: this.password
-    })
+      password: this.password,
+    });
   }
 
   private initFormControls(): void {
     this.username = new FormControl('', [
       Validators.required,
       Validators.minLength(4),
-      Validators.maxLength(20)
-    ])
+      Validators.maxLength(20),
+    ]);
     this.password = new FormControl('', [
       Validators.required,
       Validators.minLength(8),
       Validators.maxLength(20),
-      Validators.pattern(/((?=.*\d)|(?=.*\W+))(?=.*[A-Z])(?=.*[a-z]).*$/)
-    ])
+      Validators.pattern(/((?=.*\d)|(?=.*\W+))(?=.*[A-Z])(?=.*[a-z]).*$/),
+    ]);
   }
   onSubmit(): void {
     if (!this.isSignUp) {
       this.isSignUp = this.isSignUp;
-      this.authService.signin(this.user.value)
-        .subscribe((data) => {
-          this.resetForm(this.user);
-          this.router.navigate(['/tasks']);
-        }, 
-        (error: HttpErrorResponse) => {
-          console.log(error);
-          const {message} = error.error;
-          if (error.status === 401 && message.includes('Invalid credentials')) {
-            this.messageService.showMessage(MessagesTypes.WARNING, 'Incorrect login or password')
-          }
-          this.messageService.showMessage(MessagesTypes.ALERT, 'Opps something went wrong')
-        })
+      this.authStore.login(this.user.value).subscribe((data) => {
+        this.resetForm(this.user);
+        this.router.navigate(['/tasks']);
+      });
     } else {
-      this.authService.signUp(this.user.value)
-        .subscribe((data) => {
-          console.log(data);
-        })
+      this.authStore.registr(this.user.value).subscribe((data) => {});
       this.isSignUp = !this.isSignUp;
     }
 
@@ -80,7 +72,6 @@ export class LoginComponent implements OnInit {
     this.isSignUp = !this.isSignUp;
 
     this.resetForm(this.user);
-
   }
 
   getTitle(): string {
@@ -88,44 +79,47 @@ export class LoginComponent implements OnInit {
   }
 
   getInputInfo(): string {
-    return !this.isSignUp ?
-      'Fill in your username and password to sign in.'
+    return !this.isSignUp
+      ? 'Fill in your username and password to sign in.'
       : 'Start managing tasks easilly';
   }
 
-
   errorHandlerUsernameControl(): string[] {
-    const onRequire = () => 'This field is required.'
+    const onRequire = () => 'This field is required.';
 
-    const onMaxLength = ({ requiredLength, actualLength }) => `Max length should be ${requiredLength} actual length is ${actualLength}.`
+    const onMaxLength = ({ requiredLength, actualLength }) =>
+      `Max length should be ${requiredLength} actual length is ${actualLength}.`;
 
-    const onMinLength = ({ requiredLength, actualLength }) => `Min length should be ${requiredLength} actual length is ${actualLength}.`
+    const onMinLength = ({ requiredLength, actualLength }) =>
+      `Min length should be ${requiredLength} actual length is ${actualLength}.`;
 
     const errors = {
       required: onRequire,
       minlength: onMinLength,
       maxlength: onMaxLength,
-      default: () => ''
-    }
-    return getErrorsFromControl(this.username,errors);
-
+      default: () => '',
+    };
+    return getErrorsFromControl(this.username, errors);
   }
 
   errorHandlerPasswordControl(): string[] {
-    const onRequire = () => 'This field is required.'
+    const onRequire = () => 'This field is required.';
 
-    const onPattern = () => 'Password should have at least one (UpperCase and LowerCase) letter and at least one number.'
-    const onMaxLength = ({ requiredLength, actualLength }) => `Max length should be ${requiredLength} actual length is ${actualLength}.`
-    const onMinLength = ({ requiredLength, actualLength }) => `Length should be ${requiredLength} actual length is ${actualLength}.`
+    const onPattern = () =>
+      'Password should have at least one (UpperCase and LowerCase) letter and at least one number.';
+    const onMaxLength = ({ requiredLength, actualLength }) =>
+      `Max length should be ${requiredLength} actual length is ${actualLength}.`;
+    const onMinLength = ({ requiredLength, actualLength }) =>
+      `Length should be ${requiredLength} actual length is ${actualLength}.`;
 
     const errors = {
       required: onRequire,
       pattern: onPattern,
       minlength: onMinLength,
       maxlength: onMaxLength,
-      default: () => ''
-    }
-    return getErrorsFromControl(this.password,errors);
+      default: () => '',
+    };
+    return getErrorsFromControl(this.password, errors);
   }
 
   private resetForm(form: FormGroup): void {
@@ -135,5 +129,4 @@ export class LoginComponent implements OnInit {
     // })
     form.reset();
   }
-
 }

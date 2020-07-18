@@ -15,13 +15,22 @@
           </div>
         <div class="columns is-centered is-vcentered is-mobile">
           <div #entry class="column is-two-thirds">
-              <app-task-list 
+            <ng-container *ngIf="(findAll() | async).length > 0; else noTasks">
+              <app-task-list
               (changeStatus)="onChangeStatus($event)" 
               (editedTask)="onEditTask($event)"
               (removedTask)="onRemovedTask($event)"
                *ngFor="let task of findAll() | async" [task]="task">
                 <app-task-edit></app-task-edit>
               </app-task-list>
+            </ng-container>
+            <ng-template #noTasks>
+
+                <p class="is-size-4 has-text-centered">You haven't created any tasks yet.</p>
+
+              
+            </ng-template>
+            
           </div>
         </div>
       </div>

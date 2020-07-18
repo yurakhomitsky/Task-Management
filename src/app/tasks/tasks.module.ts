@@ -7,21 +7,25 @@ import { Routes, RouterModule } from '@angular/router';
 import { TaskListComponent } from './components/task-list/task-list.component';
 import { TaskEditComponent } from './components/task-edit/task-edit.component';
 import { TaskCreateComponent } from './components/task-create/task-create.component';
-
+import { TaskGuard } from './guards/task.guard';
 
 const routes: Routes = [
   {
-    path: '', component: TasksComponent
-  }
-]
+    path: '',
+    component: TasksComponent,
+    canActivate: [TaskGuard],
+  },
+];
 
 @NgModule({
-  declarations: [TasksComponent, TaskListComponent, TaskEditComponent, TaskCreateComponent],
-  imports: [
-    SharedModule,
-    RouterModule.forChild(routes)
+  declarations: [
+    TasksComponent,
+    TaskListComponent,
+    TaskEditComponent,
+    TaskCreateComponent,
   ],
-  providers: [],
-  entryComponents: [TaskCreateComponent]
+  imports: [SharedModule, RouterModule.forChild(routes)],
+  providers: [TaskGuard],
+  entryComponents: [TaskCreateComponent],
 })
-export class TasksModule { }
+export class TasksModule {}

@@ -18,8 +18,11 @@
               Tasks
             </a>
             <span class="navbar-item">
-              <a class="button is-info is-inverted" [routerLink]="['/login']">
+              <a class="button is-info is-inverted" [routerLink]="['/login']" *ngIf="isLoggedOut$ | async">
                 <span>Login</span>
+              </a>
+              <a class="button is-info is-inverted" [routerLink]="['/login']"  *ngIf="isLoggedIn$ | async" (click)="logOut()">
+                <span>Logout</span>
               </a>
             </span>
           </div>
