@@ -1,15 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { MessagesTypes } from 'src/app/shared/components/messages/messages.types.enum';
 import { MessagesService } from '../../../shared/components/messages/messages.service';
-import { LocalStorageService } from '../../../shared/services/localStorage.service';
 import { TaskCreateComponent } from '../../components/task-create/task-create.component';
-import { TasksService } from '../../services/tasks.service';
+import { TasksStore } from '../../services/tasks.store.service';
 import { TaskStatus } from '../../types/task-status.enum';
 import { Task } from '../../types/task.interface';
-import { TasksStore } from '../../services/tasks.store.service';
 
 @Component({
   selector: 'app-tasks',
