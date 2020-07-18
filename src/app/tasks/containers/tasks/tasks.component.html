@@ -19,7 +19,7 @@
               (changeStatus)="onChangeStatus($event)" 
               (editedTask)="onEditTask($event)"
               (removedTask)="onRemovedTask($event)"
-               *ngFor="let task of tasks" [task]="task">
+               *ngFor="let task of findAll() | async" [task]="task">
                 <app-task-edit></app-task-edit>
               </app-task-list>
           </div>

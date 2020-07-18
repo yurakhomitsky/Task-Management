@@ -9,6 +9,7 @@ import { TaskCreateComponent } from '../../components/task-create/task-create.co
 import { TasksService } from '../../services/tasks.service';
 import { TaskStatus } from '../../types/task-status.enum';
 import { Task } from '../../types/task.interface';
+import { TasksStore } from '../../services/tasks.store.service';
 
 @Component({
   selector: 'app-tasks',
@@ -19,75 +20,73 @@ export class TasksComponent implements OnInit {
   tasks: Task[];
 
   constructor(
-    private taskService: TasksService,
-    private localStorageService: LocalStorageService,
+    private tasksStore: TasksStore,
     private messageService: MessagesService,
-    private dialog: MatDialog,
+    private dialog: MatDialog
+  ) {}
 
-  ) { }
-
-  ngOnInit(): void {
-    this.findAll().subscribe((tasks: Task[]) => {
-      this.tasks = tasks;
-    },
-      (error) => {
-        this.messageService.showMessage(MessagesTypes.WARNING, 'Could not retrieve all tasks')
-      })
-  }
+  ngOnInit(): void {}
 
   findAll(): Observable<Task[]> {
-    return this.taskService.findAll();
+    return this.tasksStore.tasks$;
   }
   create(task: Task) {
-    return this.taskService.create(task);
+    return this.tasksStore.create(task);
   }
   updateTaskStatus(id: number, status: TaskStatus): Observable<Task> {
-    return this.taskService.updateTaskStatus(id, status)
+    return this.tasksStore.updateTaskStatus(id, status);
   }
 
   updateTask(id: number, task: Task): Observable<Task> {
-    return this.taskService.update(id, task);
+    return this.tasksStore.update(id, task);
   }
 
   deleteTask(id: number): Observable<any> {
-    return this.taskService.delete(id);
+    return this.tasksStore.delete(id);
   }
 
   createTask() {
-   const dialogRef = this.dialog.open(TaskCreateComponent, {
-     maxWidth: '1100px'
-   })
-   dialogRef.afterClosed().pipe(
-     filter(task => task),
-     switchMap((task) => this.create(task))
-   )
-   .subscribe(task => {
-    this.messageService.showMessage(MessagesTypes.SUCCESS, 'Еask has been successfully created')
-     this.tasks = [task, ...this.tasks ]
-   })
+    const dialogRef = this.dialog.open(TaskCreateComponent, {
+      maxWidth: '1100px',
+    });
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((task) => task),
+        switchMap((task) => this.create(task))
+      )
+      .subscribe(() => {
+        this.messageService.showMessage(
+          MessagesTypes.SUCCESS,
+          'Еask has been successfully created'
+        );
+      });
   }
 
   onChangeStatus(task: Task) {
-    this.updateTaskStatus(task.id, task.status).subscribe((resTask: Task) => {
-      this.tasks = this.tasks.map(tsk => tsk.id === task.id ? resTask : tsk)
-      this.messageService.showMessage(MessagesTypes.SUCCESS, 'Status task has been successfully updated')
-    }, (error) => {
-      this.messageService.showMessage(MessagesTypes.WARNING, 'Could not update status task')
-    })
+    this.updateTaskStatus(task.id, task.status).subscribe(() => {
+      this.messageService.showMessage(
+        MessagesTypes.SUCCESS,
+        'Status task has been successfully updated'
+      );
+    });
   }
 
   onEditTask(task: Task) {
-    this.updateTask(task.id, task).subscribe((resTask: Task) => {
-      this.messageService.showMessage(MessagesTypes.SUCCESS, 'Task has been successfully updated')
-      this.tasks = this.tasks.map(tsk => tsk.id === task.id ? resTask : tsk)
-    })
+    this.updateTask(task.id, task).subscribe(() => {
+      this.messageService.showMessage(
+        MessagesTypes.SUCCESS,
+        'Task has been successfully updated'
+      );
+    });
   }
 
   onRemovedTask(id: number) {
     this.deleteTask(id).subscribe(() => {
-      this.tasks = this.tasks.filter(task => task.id!== id)
-      this.messageService.showMessage(MessagesTypes.SUCCESS, 'Task has been successfully removed')
-    })
+      this.messageService.showMessage(
+        MessagesTypes.SUCCESS,
+        'Task has been successfully removed'
+      );
+    });
   }
-
 }
